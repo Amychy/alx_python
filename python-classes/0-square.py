@@ -3,5 +3,9 @@
 
 
 class Square:
-    """ empty square """
-    pass
+    """ square with size attribute """
+    def __init__(self, size):
+        self.__size = size
+
+my_square = Square(3)
+print(my_square.__dict__)
