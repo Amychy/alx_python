@@ -4,3 +4,6 @@
 class BaseGeometry:
     """ defines class BaseGeometry """
     pass
+
+# Additional attributes
+BaseGeometry.__init_subclass__ = None
