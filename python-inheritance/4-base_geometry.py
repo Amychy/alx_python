@@ -6,8 +6,8 @@ class BaseGeometry:
     """this class represents a base geometry"""
 
     def __dir__(self):
-        """Excludes the 'area' method from the list of attributes."""
-        return [attribute for attribute in super().__dir__() if attribute != 'area']
+        """Includes only the attributes and methods explicitly defined in the class."""
+        return [attr for attr in self.__dict__.keys() if not callable(getattr(self, attr))]
 
     def area(self):
         """method not implemented yet"""
