@@ -6,8 +6,8 @@ class BaseGeometry:
     """this class represents a base geometry"""
 
     def __dir__(self):
-        """Includes the default attributes and methods and the 'area' method."""
-        return dir(type(self)) + ['area']
+        """Includes the default attributes and methods and the 'area' method without duplicates."""
+        return list(set(dir(type(self))) | {'area'})
 
     def area(self):
         """method not implemented yet"""
