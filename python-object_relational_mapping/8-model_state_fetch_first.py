@@ -11,7 +11,7 @@ from sqlalchemy.orm import sessionmaker
 
 if __name__ == "__main__":
     """
-    Access to the database and get a state
+    Access to the database and get the first state
     from the database.
     """
 
@@ -20,3 +20,13 @@ if __name__ == "__main__":
 
     engine = create_engine(db_url)
     Session = sessionmaker(bind=engine)
+    session = Session()
+
+    first_state = session.query(State).first()
+    
+    if first_state:
+        print("{}: {}".format(first_state.id, first_state.name))
+    else:
+        print("Nothing")
+
+    session.close()
