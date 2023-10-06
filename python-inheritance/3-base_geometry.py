@@ -15,7 +15,4 @@ class BaseGeometry:
             '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__',
             '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__'
         ]
-        return [attr for attr in desired_attrs]
-
-    def __init_subclass__(cls):
-        pass
+        return [attr for attr in desired_attrs if attr != '__init_subclass__']
