@@ -1,17 +1,11 @@
 #!/usr/bin/python3
-"""
-This module defines a base geometry class BaseGeometry.
-"""
+"""Defines a base geometry class BaseGeometry."""
 
 class BaseGeometry:
-    """
-    This class represents a base geometry.
-    """
+    """This class represents a base geometry."""
 
     def __dir__(self):
-        """
-        Includes only the desired attributes and methods.
-        """
+        """Includes only the desired attributes and methods."""
         desired_attrs = [
             '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__',
             '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__',
@@ -20,8 +14,6 @@ class BaseGeometry:
         ]
         return [attr for attr in desired_attrs if attr != '__init_subclass__']
 
-    def __init_subclass__(cls):
-        """
-        Remove __init_subclass__ from the list of class attributes.
-        """
-        pass
+    def area(self):
+        """method not implemented yet"""
+        raise Exception("area() is not implemented")
