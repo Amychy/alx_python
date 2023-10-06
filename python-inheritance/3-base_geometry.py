@@ -13,7 +13,3 @@ class BaseGeometry:
             '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'area'
         ]
         return [attr for attr in desired_attrs if attr != '__init_subclass__']
-
-    def area(self):
-        """Method not implemented yet"""
-        raise Exception("area() is not implemented")
