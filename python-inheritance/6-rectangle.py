@@ -33,7 +33,6 @@ class CustomDirMeta(type):
             'area', 'integer_validator'
         ]
         return desired_attrs
-
 class Rectangle(BaseGeometry, metaclass=CustomDirMeta):
     """This class represents a rectangle."""
 
