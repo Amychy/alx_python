@@ -22,18 +22,6 @@ class BaseGeometry:
         if value <= 0:
             raise ValueError("{} must be greater than 0".format(name))
 
-class CustomDirMeta(type):
-    def __dir__(cls):
-        """Includes only the desired attributes and methods."""
-        desired_attrs = [
-            '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__',
-            '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__',
-            '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__',
-            '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__',
-            'area', 'integer_validator'
-        ]
-        return desired_attrs
-
 class Rectangle(BaseGeometry):
     """This class represents a rectangle."""
 
@@ -48,6 +36,6 @@ class Rectangle(BaseGeometry):
         self.__width = width
         self.__height = height
 
-        """ Validate width and height as positive integers """
+        # Validate width and height as positive integers
         self.integer_validator("width", self.__width)
         self.integer_validator("height", self.__height)
