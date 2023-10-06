@@ -1,13 +1,8 @@
 #!/usr/bin/python3
 """Defines a base geometry class BaseGeometry."""
 
-class BaseGeometry:
-    """
-    This is the base geometry class.
-    It is currently an empty class.
-    """
-    
-    def __dir__(self):
+class ExcludeInitSubclass(type):
+    def __dir__(cls):
         """Includes only the desired attributes and methods."""
         desired_attrs = [
             '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__',
@@ -16,3 +11,9 @@ class BaseGeometry:
             '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__'
         ]
         return [attr for attr in desired_attrs if attr != '__init_subclass__']
+
+class BaseGeometry(metaclass=ExcludeInitSubclass):
+    """
+    This is the base geometry class.
+    It is currently an empty class.
+    """
