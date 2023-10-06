@@ -33,7 +33,8 @@ class CustomDirMeta(type):
             'area', 'integer_validator'
         ]
         return desired_attrs
-class Rectangle(BaseGeometry, metaclass=CustomDirMeta):
+
+class Rectangle(BaseGeometry):
     """This class represents a rectangle."""
 
     def __init__(self, width, height):
@@ -50,3 +51,6 @@ class Rectangle(BaseGeometry, metaclass=CustomDirMeta):
         # Validate width and height as positive integers
         self.integer_validator("width", self.__width)
         self.integer_validator("height", self.__height)
+
+# Explicitly set the metaclass for the Rectangle class
+Rectangle = CustomDirMeta("Rectangle", (Rectangle,), {})
