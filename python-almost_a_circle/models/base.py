@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 
-#defining base model class
+"""This module defines the Base class."""
+
 import json
 import csv
 import turtle
-
 
 class Base:
     """Base model.
