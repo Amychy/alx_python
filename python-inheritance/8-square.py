@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Defines a class Square that inherits from Rectangle."""
-
+Rectangle = __import__('7-rectangle').Rectangle
 
 class BaseGeometry:
     """This class represents a base geometry."""
