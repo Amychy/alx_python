@@ -35,13 +35,7 @@ class CustomDirMeta(type):
         return desired_attrs
 
 class Rectangle(BaseGeometry):
-    """
-    This class represents a rectangle.
-
-    Attributes:
-        __width (int): The width of the rectangle.
-        __height (int): The height of the rectangle.
-    """
+    """This class represents a rectangle."""
 
     def __init__(self, width, height):
         """
