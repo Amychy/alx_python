@@ -14,4 +14,7 @@ class CustomDirMeta(type):
 
 class BaseGeometry(metaclass=CustomDirMeta):
     """Represent base geometry."""
-    pass
+
+    def __dir__(self):
+        """Includes only the desired attributes and methods for instances."""
+        return CustomDirMeta.__dir__(BaseGeometry)
