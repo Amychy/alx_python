@@ -13,3 +13,6 @@ class BaseGeometry:
             '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__'
         ]
         return [attr for attr in desired_attrs if attr != '__init_subclass__']
+
+    def __init_subclass__(cls):
+        pass
