@@ -2,8 +2,11 @@
 """Defines a base geometry class BaseGeometry."""
 
 class BaseGeometry:
-    """This class represents a base geometry."""
-
+    """
+    This is the base geometry class.
+    It is currently an empty class.
+    """
+    
     def __dir__(self):
         """Includes only the desired attributes and methods."""
         desired_attrs = [
@@ -13,6 +16,3 @@ class BaseGeometry:
             '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__'
         ]
         return [attr for attr in desired_attrs if attr != '__init_subclass__']
-
-    def __init_subclass__(cls):
-        pass
