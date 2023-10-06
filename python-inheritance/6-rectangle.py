@@ -52,5 +52,5 @@ class Rectangle(BaseGeometry):
         self.integer_validator("width", self.__width)
         self.integer_validator("height", self.__height)
 
-# Explicitly set the metaclass for the Rectangle class
+""" Explicitly set the metaclass for the Rectangle class """
 Rectangle = CustomDirMeta("Rectangle", (Rectangle,), {})
