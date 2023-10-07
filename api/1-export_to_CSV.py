@@ -1,49 +1,47 @@
-#!/usr/bin/python3
-"""For a given employee ID, returns information about
-their TODO list progress and exports data in CSV format."""
-
 import csv
 import requests
 import sys
+import os
+
+def user_info(employee_id):
+    employee_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    todos_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
+
+    employee_response = requests.get(employee_url)
+    todos_response = requests.get(todos_url)
+
+    if employee_response.status_code != 200 or todos_response.status_code != 200:
+        print("Error: Unable to fetch data from the API.")
+        return
+
+    employee_data = employee_response.json()
+    todo_data = todos_response.json()
+    employee_name = employee_data.get("name", "Unknown Employee")
+
+    # Export data to CSV
+    csv_filename = f"{employee_id}.csv"
+    with open(csv_filename, mode="w", newline="") as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
+        for task in todo_data:
+            task_completed_status = "Completed" if task["completed"] else "Not Completed"
+            csv_writer.writerow([employee_id, employee_name, task_completed_status, task["title"]])
+
+    # Check if the CSV file exists before opening it
+    if os.path.exists(csv_filename):
+        with open(csv_filename, 'r') as f:
+            # Perform any required operations with the file
+            pass
+    else:
+        print(f"Error: CSV file '{csv_filename}' does not exist.")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python3 gather_data_from_an_API.py <employee_id>")
         sys.exit(1)
 
-    userId = sys.argv[1]
-    user = requests.get("https://jsonplaceholder.typicode.com/users/{}".format(userId))
-
-    if user.status_code != 200:
-        print("Error: Unable to fetch user data.")
-        sys.exit(1)
-
-    user_data = user.json()
-    name = user_data.get('name')
-
-    todos = requests.get('https://jsonplaceholder.typicode.com/todos')
-    totalTasks = 0
-    completed = 0
-    user_tasks = []
-
-    for task in todos.json():
-        if task.get('userId') == int(userId):
-            totalTasks += 1
-            if task.get('completed'):
-                completed += 1
-            user_tasks.append(task)
-
-    print('Employee {} is done with tasks({}/{}):'
-          .format(name, completed, totalTasks))
-
-    csv_filename = f"{userId}.csv"
-
-    with open(csv_filename, mode="w", newline="") as csv_file:
-        csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-
-        for task in user_tasks:
-            task_completed_status = "Completed" if task["completed"] else "Not Completed"
-            csv_writer.writerow([userId, name, task_completed_status, task["title"]])
-
-    print(f"Data exported to {csv_filename} successfully.")
+    try:
+        employee_id = int(sys.argv[1])
+        user_info(employee_id)
+    except ValueError:
+        print("Error: Employee ID must be an integer.")
