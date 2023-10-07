@@ -3,8 +3,18 @@ import requests
 
 def get_all_employees_data():
     all_employees_data = {}
+    max_employee_id = 1  # Initialize with a minimum ID
 
-    for employee_id in range(1, 11):  # Assuming employee IDs range from 1 to 10
+    # Find the maximum employee ID that exists in the API
+    while True:
+        employee_info = requests.get(f"https://jsonplaceholder.typicode.com/users/{max_employee_id}")
+        if employee_info.status_code == 200:
+            max_employee_id += 1
+        else:
+            break
+
+    for employee_id in range(1, max_employee_id):
+        print(f"Processing employee ID {employee_id}")
         employee_info = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}")
         todos = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos")
 
