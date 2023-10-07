@@ -2,9 +2,9 @@
 """For a given employee ID, returns information about
 their TODO list progress and exports data in CSV format."""
 
+import csv
 import requests
 import sys
-import csv
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
