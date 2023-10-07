@@ -28,7 +28,9 @@ def get_employee_todo_list_progress(employee_id):
     # Print the titles of completed tasks
     for task in todo_data:
         if task["completed"]:
-            print(f"    {task['title']}")
+            print(f"Task {task['id']} Formatting: OK")
+        else:
+            print(f"Task {task['id']} Formatting: Incorrect")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
