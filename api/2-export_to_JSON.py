@@ -1,3 +1,7 @@
+"""
+This module exports data in JSON format for all tasks from all employees.
+"""
+
 import json
 import requests
 
