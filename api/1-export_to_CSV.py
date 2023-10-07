@@ -34,6 +34,10 @@ def export_tasks_to_csv(employee_id):
 
     print(f"Data exported to {csv_filename}")
 
+    # Now you can open and read the CSV file
+    with open(csv_filename, 'r') as f:
+        pass
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python3 export_to_CSV.py <employee_id>")
