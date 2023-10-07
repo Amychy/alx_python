@@ -41,5 +41,11 @@ def get_all_employees_data():
 
     print(f"Data exported to {json_filename} successfully.")
 
+    # Debugging output for each user ID
+    for employee_id, tasks in all_employees_data.items():
+        print(f"User ID: {employee_id}")
+        for task in tasks:
+            print(f"  Task: {task['task']}, Completed: {task['completed']}")
+
 if __name__ == "__main__":
     get_all_employees_data()
