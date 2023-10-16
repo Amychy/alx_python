@@ -1,25 +1,45 @@
 import csv
-import os
 import requests
 import sys
 
-def user_info(user_id):
-    url = "https://jsonplaceholder.typicode.com/"
-    user = requests.get(url + "users/{}".format(user_id)).json()
-    username = user.get("username")
-    todos = requests.get(url + "todos", params={"userId": user_id}).json()
+# No execution of this file when imported
+if __name__ == "__main__":
+    
+# Pass employee id on command line
+    id = sys.argv[1]
 
-    filename = "{}.csv".format(user_id)
+# APIs 
+    userTodoURL = "https://jsonplaceholder.typicode.com/users/{}/todos".format(id)
+    userProfile = "https://jsonplaceholder.typicode.com/users/{}".format(id)
 
-    with open(filename, "w", newline="\n") as csvfile:
-        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        [writer.writerow([user_id, username, t.get("completed"), t.get("title")]) for t in todos]
+# Make requests on APIs
+    todoResponse = requests.get(userTodoURL)
+    profileResponse = requests.get(userProfile)
 
-if __name__ == "__main":
-    if len(sys.argv) != 2:
-        print("Usage: python main.py <user_id>")
-        sys.exit(1)
+# Parse responses and store in variables
+    todoJson_Data = todoResponse.json()
+    profileJson_Data = profileResponse.json()
 
-    user_id = sys.argv[1]
-    user_info(int(user_id))
-    print("Number of tasks in CSV: OK")
+#Get employee information
+    employeeName = profileJson_Data['username']
+
+    dataList = []
+
+    for data in todoJson_Data:
+        dataDict = {"userId":data['userId'], "name":employeeName, "completed":data['completed'], "title":data['title']}
+        dataList.append(dataDict)
+
+    # Specify the CSV file path
+    csv_file_path = '{}.csv'.format(todoJson_Data[0]['userId'])
+
+    # Define the field names (column headers)
+    fieldnames = ["userId", "name", "completed", "title"]
+
+    # Open the CSV file in write mode
+    with open(csv_file_path, 'w', newline='') as csv_file:
+        # Create a CSV writer
+        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+
+        # Write the data rows
+        for row in dataList:
+            csv_writer.writerow(row)
