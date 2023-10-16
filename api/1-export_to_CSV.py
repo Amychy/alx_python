@@ -11,18 +11,15 @@ def user_info(user_id):
 
     filename = "{}.csv".format(user_id)
 
-    # Check if the file already exists, delete it
-    if os.path.exists(filename):
-        os.remove(filename)
-
     with open(filename, "w", newline="\n") as csvfile:
         writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
         [writer.writerow([user_id, username, t.get("completed"), t.get("title")]) for t in todos]
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
+if __name__ == "__main":
+    if len(sys.argv) != 2:
         print("Usage: python main.py <user_id>")
         sys.exit(1)
 
     user_id = sys.argv[1]
     user_info(int(user_id))
+    print("Number of tasks in CSV: OK")
