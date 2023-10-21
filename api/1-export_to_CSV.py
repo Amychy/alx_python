@@ -1,45 +1,26 @@
+#!/usr/bin/python3
+"""Returns to-do list information for a given employee ID."""
 import csv
 import requests
 import sys
 
-# No execution of this file when imported
-if __name__ == "__main__":
-    
-# Pass employee id on command line
-    id = sys.argv[1]
 
-# APIs 
-    userTodoURL = "https://jsonplaceholder.typicode.com/users/{}/todos".format(id)
-    userProfile = "https://jsonplaceholder.typicode.com/users/{}".format(id)
+if __name__ == '__main__':
+    url = "https://jsonplaceholder.typicode.com"
+    user_id = sys.argv[1]
 
-# Make requests on APIs
-    todoResponse = requests.get(userTodoURL)
-    profileResponse = requests.get(userProfile)
+    user = requests.get("{}/users/{}".format(url, user_id)).json()
+    todos = requests.get(url + "/todos", params={"userId": user_id}).json()
 
-# Parse responses and store in variables
-    todoJson_Data = todoResponse.json()
-    profileJson_Data = profileResponse.json()
+    username = user.get('username')
+    filename = user_id + ".csv"
 
-#Get employee information
-    employeeName = profileJson_Data['username']
+    rows = []
+    for data in todos:
+        rows.append([user_id, username, data.get(
+            'completed'), data.get('title')])
 
-    dataList = []
-
-    for data in todoJson_Data:
-        dataDict = {"userId":data['userId'], "name":employeeName, "completed":data['completed'], "title":data['title']}
-        dataList.append(dataDict)
-
-    # Specify the CSV file path
-    csv_file_path = '{}.csv'.format(todoJson_Data[0]['userId'])
-
-    # Define the field names (column headers)
-    fieldnames = ["userId", "name", "completed", "title"]
-
-    # Open the CSV file in write mode
-    with open(csv_file_path, 'w', newline='') as csv_file:
-        # Create a CSV writer
-        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-
-        # Write the data rows
-        for row in dataList:
-            csv_writer.writerow(row)
+    with open(filename, "w", newline="") as csvfile:
+        writer = csv.writer(csvfile, delimiter=',',
+                            quotechar='"', quoting=csv.QUOTE_ALL)
+        [writer.writerow(row) for row in rows]
