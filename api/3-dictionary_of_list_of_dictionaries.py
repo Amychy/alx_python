@@ -1,45 +1,27 @@
+#!/usr/bin/python3
+"""Returns to-do list information for a given employee ID."""
 import json
 import requests
 
-def get_all_employees_data():
-    all_employees_data = {}
-    max_employee_id = 1  # Initialize with a minimum ID
 
-    # Find the maximum employee ID that exists in the API
-    while True:
-        employee_info = requests.get(f"https://jsonplaceholder.typicode.com/users/{max_employee_id}")
-        if employee_info.status_code == 200:
-            max_employee_id += 1
-        else:
-            break
+if __name__ == '__main__':
+    url = "https://jsonplaceholder.typicode.com"
 
-    for employee_id in range(1, max_employee_id):
-        print(f"Processing employee ID {employee_id}")
-        employee_info = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}")
-        todos = requests.get(f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos")
+    users = requests.get("{}/users".format(url)).json()
+    todos = requests.get(url + "/todos").json()
 
-        if employee_info.status_code == 200 and todos.status_code == 200:
-            employee_data = employee_info.json()
-            todos_data = todos.json()
+    dict = {}
+    for user in users:
+        arr = []
+        user_id = user.get('id')
+        for todo in todos:
+            if user.get('id') == todo.get('userId'):
+                arr.append({'task': todo.get('title'),
+                            'completed': todo.get('completed'),
+                            'username': user.get('username')})
+        dict[user_id] = arr
 
-            tasks = []
-            for task in todos_data:
-                tasks.append({
-                    "username": employee_data["username"],
-                    "task": task["title"],
-                    "completed": task["completed"]
-                })
-
-            all_employees_data[employee_data["id"]] = tasks
-        else:
-            print(f"Error: Unable to fetch data for employee ID {employee_id}")
-
-    # Export data to JSON
-    json_filename = "todo_all_employees.json"
-    with open(json_filename, 'w') as jsonfile:
-        json.dump(all_employees_data, jsonfile, indent=4)
-
-    print(f"Data exported to {json_filename} successfully.")
-
-if __name__ == "__main__":
-    get_all_employees_data()
+    filename = "todo_all_employees.json"
+    with open(filename, "w", encoding="utf-8") as json_file:
+        json_text = json.dumps(dict)
+        json_file.write(json_text)
