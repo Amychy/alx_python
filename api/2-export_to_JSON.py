@@ -1,29 +1,35 @@
 #!/usr/bin/python3
-"""Returns to-do list information for a given employee ID."""
+"""
+Python script to export data to a JSON file.
+"""
+
 import json
 import requests
 import sys
 
 
-if __name__ == '__main__':
-    url = "https://jsonplaceholder.typicode.com"
-    user_id = sys.argv[1]
+def export_to_CSV(user_id):
+    employee_name = requests.get(
+        "https://jsonplaceholder.typicode.com/users/{}".format(user_id)
+    ).json()["username"]
+    tasks = requests.get(
+        "https://jsonplaceholder.typicode.com/users/{}/todos".format(user_id)
+    ).json()
 
-    user = requests.get("{}/users/{}".format(url, user_id)).json()
-    todos = requests.get(url + "/todos", params={"userId": user_id}).json()
+    tasks_data = {str(user_id): []}
 
-    username = user.get('username')
+    for task in tasks:
+        tasks_data[str(user_id)].append(
+            {
+                "task": task["title"],
+                "completed": task["completed"],
+                "username": employee_name,
+            }
+        )
 
-    dict = {}
-    data = []
+    with open(str(user_id) + ".json", "w", encoding="UTF8", newline="") as f:
+        json.dump(tasks_data, f)
 
-    for todo in todos:
-        data.append({'task': todo.get('title'),
-                    'completed': todo.get('completed'), 'username': username})
 
-    dict[user_id] = data
-
-    filename = user_id + ".json"
-    with open(filename, "w", encoding="utf-8") as json_file:
-        json_text = json.dumps(dict)
-        json_file.write(json_text)
+if __name__ == "__main__":
+    export_to_CSV(sys.argv[1])
